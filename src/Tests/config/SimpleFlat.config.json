@@ -1,0 +1,15 @@
+﻿{
+    "dev": {
+        "stringProp": "str1",
+        "booleanProp": true,
+        "integerProp": 123,
+        "dateTimeProp": "2015-03-21T09:09:11",
+        "timeSpanProp": "1.02:23:01.100",
+        "decimalProp": 12.356
+    },
+    "prod": {
+        "stringProp": "strPROD",
+        "booleanProp": false,
+        "decimalProp": 13.356
+    }
+}
