@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/8siydly69qfbk1bb?svg=true)](https://ci.appveyor.com/project/iiwaasnet/config-provider)
+
 # config-provider
 Typed configuration provider with default JSON configuration reader
 
