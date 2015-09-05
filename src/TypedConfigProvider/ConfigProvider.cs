@@ -56,8 +56,6 @@ namespace TypedConfigProvider
         public T GetConfiguration<T>()
             where T : class, new()
         {
-            var target = targets.First().ToLower();
-
             CheckLoadConfiguration();
 
             T config;
@@ -66,10 +64,9 @@ namespace TypedConfigProvider
                 config = TryGetTypedConfiguration<T>();
                 if (config == null)
                 {
-                    throw new Exception(string.Format("Unable to get configuration of type {0}! Missing {1}.[{2}]?", 
-                        typeof (T).Name,
-                        TypeToSectionName(typeof (T)),
-                        string.Join("|", configFileLocator.GetSupportedFileExtensions())));
+                    throw new Exception($"Unable to get configuration of type {typeof (T).Name}! " +
+                                        $"Missing {TypeToSectionName(typeof (T))}." +
+                                        $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
                 }
 
                 configurations[typeof (T)] = config;
@@ -116,11 +113,9 @@ namespace TypedConfigProvider
 
         private static T Clone<T>(T source)
             where T : class
-        {
-            return (source != null)
-                       ? JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source))
-                       : source;
-        }
+            => (source != null)
+                   ? JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source))
+                   : null;
 
         private void LoadConfiguration()
         {

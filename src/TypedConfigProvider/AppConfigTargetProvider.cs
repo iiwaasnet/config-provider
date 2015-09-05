@@ -19,15 +19,13 @@ namespace TypedConfigProvider
             var sequence = ConfigurationManager.AppSettings[ConfigurationKey];
             if (string.IsNullOrWhiteSpace(sequence))
             {
-                throw new ArgumentException(string.Format("{0} not configured!", ConfigurationKey));
+                throw new ArgumentException($"{ConfigurationKey} not configured!");
             }
 
             return sequence.Split(',');
         }
 
         public IEnumerable<string> GetTargetsSequence()
-        {
-            return targetsSequence;
-        }
+            => targetsSequence;
     }
 }

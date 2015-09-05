@@ -8,6 +8,7 @@ namespace TypedConfigProvider
     {
         private readonly IEnumerable<string> paths;
         private readonly IEnumerable<string> fileExtensions;
+
         public ConfigFileLocator(params string[] paths)
         {
             this.paths = paths;
@@ -15,25 +16,15 @@ namespace TypedConfigProvider
         }
 
         public IEnumerable<FileInfo> FindConfigFiles()
-        {
-            return paths.SelectMany(FindConfigFilesInFolder).ToArray();
-        }
+            => paths.SelectMany(FindConfigFilesInFolder).ToArray();
 
         private IEnumerable<FileInfo> FindConfigFilesInFolder(string path)
-        {
-            var dir = new DirectoryInfo(path);
-
-            return fileExtensions.SelectMany(ext => FindConfigFileByMask(dir, ext));
-        }
+            => fileExtensions.SelectMany(ext => FindConfigFileByMask(new DirectoryInfo(path), ext));
 
         private static IEnumerable<FileInfo> FindConfigFileByMask(DirectoryInfo dir, string fileExt)
-        {
-            return dir.GetFiles("*." + fileExt, SearchOption.TopDirectoryOnly);
-        }
+            => dir.GetFiles("*." + fileExt, SearchOption.TopDirectoryOnly);
 
         public IEnumerable<string> GetSupportedFileExtensions()
-        {
-            return fileExtensions;
-        }
+            => fileExtensions;
     }
 }
