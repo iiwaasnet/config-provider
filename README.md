@@ -4,7 +4,7 @@
 Typed configuration provider with default JSON configuration reader
 
 
-### Sample configuration file: Sample.config.json
+#### Sample configuration file: Sample.config.json
 ```json
 {
     "dev": {
@@ -17,7 +17,7 @@ Typed configuration provider with default JSON configuration reader
 }
 ```
 
-### Sample app/web.config file section
+#### Sample app.config/web.config file section
 ```xml
 <appSettings>
   <!-- override PROD settings with DEV ones  -->
@@ -25,7 +25,7 @@ Typed configuration provider with default JSON configuration reader
 </appSettings>
 ```
 
-### C# mapping class
+#### C# mapping class
 ```csharp
 public class SampleConfiguration
 {
