@@ -8,5 +8,15 @@
                 "name": "item2"
             }
         ]
+    },
+    "reset": {
+        "items": null
+    },
+    "prod": {
+        "items": [
+            {
+                "name": "item1PROD"
+            }
+        ]
     }
 }

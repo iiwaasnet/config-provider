@@ -54,6 +54,23 @@ namespace Tests
         }
 
         [Test]
+        public void Test_UseNullResetToRemoveAllArrayItems()
+        {
+            var targetProvider = new Mock<IConfigTargetProvider>();
+
+            var item1DEV = "item1";
+            var item2DEV = "item2";
+            var item1PROD = "item1PROD";
+
+            targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"dev", "reset", "prod"});
+            var configProvider = new ConfigProvider(targetProvider.Object, "config");
+            var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
+
+            Assert.AreEqual(1, config.Items.Count());
+            Assert.AreEqual(1, config.Items.Count(i => i.Name == item1PROD));
+        }
+
+        [Test]
         public void Test_ConfigurationSectionsAreAppliedInOrderOfTargetsProvided()
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
