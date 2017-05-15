@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>TypedConfigProvider</id>
-    <version>1.0</version>
+    <version>1.1</version>
     <title>TypedConfigProvider</title>
     <authors>Sergey Ivasenko</authors>
     <owners>Sergey Ivasenko</owners>
     <licenseUrl>https://github.com/iiwaasnet/config-provider/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/iiwaasnet/config-provider</projectUrl>
-    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <iconUrl>https://cdn.rawgit.com/iiwaasnet/config-provider/bb28c81f/img/TypedConfigProvider.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A very simple library to provide typed access to configuration files in JSON format.</description>
     <releaseNotes>Default implementation with JSON configuration reader.</releaseNotes>
