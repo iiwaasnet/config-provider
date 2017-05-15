@@ -1,27 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-    <metadata>
-        <id>TypedConfigProvider</id>
-        <version>1.0.1</version>
-        <title>TypedConfigProvider</title>
-        <authors>Sergey Ivasenko</authors>
-        <owners>Sergey Ivasenko</owners>
-        <licenseUrl>https://github.com/iiwaasnet/config-provider/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/iiwaasnet/config-provider</projectUrl>
-        <iconUrl>https://raw.githubusercontent.com/iiwaasnet/config-provider/master/img/TypedConfigProvider.png</iconUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>A very simple library to provide typed access to configuration files in JSON format.</description>
-        <releaseNotes>New:
-			* Changed to .NET FW-4.6
-			* Updated Newtonsoft.Json
-		</releaseNotes>
-        <copyright>MIT</copyright>
-        <tags>configuration JSON .NET</tags>
-        <dependencies>
-            <dependency id="Newtonsoft.Json" version="7.0.1" />
-        </dependencies>
-    </metadata>
-    <files>
-        <file src="bin\release\TypedConfigProvider.dll" target="lib\net452\TypedConfigProvider.dll" />
-    </files>
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TypedConfigProvider</id>
+    <version>1.0</version>
+    <title>TypedConfigProvider</title>
+    <authors>Sergey Ivasenko</authors>
+    <owners>Sergey Ivasenko</owners>
+    <licenseUrl>https://github.com/iiwaasnet/config-provider/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/iiwaasnet/config-provider</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A very simple library to provide typed access to configuration files in JSON format.</description>
+    <releaseNotes>Default implementation with JSON configuration reader.</releaseNotes>
+    <copyright>MIT</copyright>
+    <tags>configuration JSON .NET</tags>
+  </metadata>
 </package>
