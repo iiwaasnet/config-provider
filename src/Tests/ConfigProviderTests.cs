@@ -48,9 +48,9 @@ namespace Tests
             var configProvider = new ConfigProvider(targetProvider.Object, "config");
             var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
 
-            Assert.AreEqual(2, config.Items.Count());
-            Assert.AreEqual(1, config.Items.Count(i => i.Name == item1));
-            Assert.AreEqual(1, config.Items.Count(i => i.Name == item2));
+            Assert.AreEqual(2, config.Entity.Items.Count());
+            Assert.AreEqual(1, config.Entity.Items.Count(i => i.Name == item1));
+            Assert.AreEqual(1, config.Entity.Items.Count(i => i.Name == item2));
         }
 
         [Test]
@@ -58,16 +58,15 @@ namespace Tests
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
 
-            var item1DEV = "item1";
-            var item2DEV = "item2";
-            var item1PROD = "item1PROD";
-
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"dev", "reset", "prod"});
             var configProvider = new ConfigProvider(targetProvider.Object, "config");
             var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
 
-            Assert.AreEqual(1, config.Items.Count());
-            Assert.AreEqual(1, config.Items.Count(i => i.Name == item1PROD));
+            Assert.AreEqual(1, config.Entity.Items.Count());
+            Assert.AreEqual("item3", config.Entity.Items.First().Name);
+            Assert.AreEqual("valueDev", config.Prop);
+            Assert.AreEqual("entityPropProd", config.Entity.Prop);
+            Assert.AreEqual("valueDev", config.Prop);
         }
 
         [Test]

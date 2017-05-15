@@ -1,22 +1,28 @@
 ﻿{
     "dev": {
-        "items": [
-            {
-                "name": "item1"
-            },
-            {
-                "name": "item2"
-            }
-        ]
+        "entity": {
+            "items": [
+                {
+                    "name": "item1"
+                },
+                {
+                    "name": "item2"
+                }
+            ],
+            "prop": "entityPropDev"
+        },
+        "prop": "valueDev"
     },
     "reset": {
-        "items": null
+        "entity": {
+            "items": null,
+            "prop": "entityPropProd"
+        }
     },
     "prod": {
-        "items": [
-            {
-                "name": "item1PROD"
-            }
-        ]
+        "entity": {
+            "items": [ { "name": "item3" } ],
+            "prop": "entityPropProd"
+        }
     }
 }
