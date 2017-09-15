@@ -34,4 +34,4 @@ public class SampleConfiguration
 }
 ```
 
-Please, look into Tests project for more usage cases.
+Please, look into Tests project for more use cases.
