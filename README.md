@@ -1,8 +1,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/8siydly69qfbk1bb?svg=true)](https://ci.appveyor.com/project/iiwaasnet/config-provider)
+[![NuGet version](https://badge.fury.io/nu/TypedConfigProvider.svg)](https://badge.fury.io/nu/TypedConfigProvider)
 
-# config-provider
+# TypedConfigProvider
 During its life-cycle, software is deployed on multiple environments: developer's machine, test stage, production servers, etc. Each environment may require different configuration to be provided for the software to work properly.
-**config-provider** makes management of environment-dependent configuration simple:
+**TypedConfigProvider** makes management of environment-dependent configuration simple:
 * create default configuration section
 * provide only needed overrides for each of the environments
 * set the environment sequence, i.e. order in which configuration sections should be applied
