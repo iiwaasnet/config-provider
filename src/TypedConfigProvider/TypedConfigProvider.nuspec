@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>TypedConfigProvider</id>
-    <version>1.1</version>
+    <version>2.0</version>
     <title>TypedConfigProvider</title>
     <authors>Sergey Ivasenko</authors>
     <owners>Sergey Ivasenko</owners>

@@ -6,6 +6,7 @@ namespace TypedConfigProvider
     public interface IConfigFileLocator
     {
         IEnumerable<FileInfo> FindConfigFiles();
+
         IEnumerable<string> GetSupportedFileExtensions();
     }
 }

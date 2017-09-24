@@ -23,16 +23,14 @@ namespace TypedConfigProvider
         private readonly IConfigFileLocator configFileLocator;
 
         static ConfigProvider()
-        {
-            jsonSerializerSettings = new JsonSerializerSettings
-                                     {
-                                         ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                         MissingMemberHandling = MissingMemberHandling.Error,
-                                         DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                                         DateParseHandling = DateParseHandling.None,
-                                         DateTimeZoneHandling = DateTimeZoneHandling.Utc
-                                     };
-        }
+            => jsonSerializerSettings = new JsonSerializerSettings
+                                        {
+                                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                                            MissingMemberHandling = MissingMemberHandling.Error,
+                                            DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                                            DateParseHandling = DateParseHandling.None,
+                                            DateTimeZoneHandling = DateTimeZoneHandling.Utc
+                                        };
 
         public ConfigProvider(IConfigTargetProvider targetProvider)
             : this(targetProvider, DefaultConfigDir)
@@ -62,14 +60,11 @@ namespace TypedConfigProvider
             if ((config = TryGetCachedConfiguration<T>()) == null)
             {
                 config = TryGetTypedConfiguration<T>();
-                if (config == null)
-                {
-                    throw new Exception($"Unable to get configuration of type {typeof (T).Name}! " +
-                                        $"Missing {TypeToSectionName(typeof (T))}." +
-                                        $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
-                }
 
-                configurations[typeof (T)] = config;
+                configurations[typeof(T)] = config
+                                            ?? throw new Exception($"Unable to get configuration of type {typeof(T).Name}! " +
+                                                                   $"Missing {TypeToSectionName(typeof(T))}." +
+                                                                   $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
             }
 
             return config;
@@ -77,8 +72,7 @@ namespace TypedConfigProvider
 
         private T TryGetCachedConfiguration<T>()
         {
-            object tmpConfig;
-            configurations.TryGetValue(typeof (T), out tmpConfig);
+            configurations.TryGetValue(typeof(T), out var tmpConfig);
 
             return (T) tmpConfig;
         }
@@ -91,7 +85,7 @@ namespace TypedConfigProvider
             foreach (var target in targets)
             {
                 foreach (var section in metadatas.Values
-                                                 .Where(v => v.ConfigName == TypeToSectionName(typeof (T)))
+                                                 .Where(v => v.ConfigName == TypeToSectionName(typeof(T)))
                                                  .SelectMany(v => v.Sections)
                                                  .Where(s => s.Target == target))
                 {
@@ -106,10 +100,7 @@ namespace TypedConfigProvider
             return config;
         }
 
-        private string TypeToSectionName(Type type)
-        {
-            return type.Name.ToLower().Replace(ConfigClassNameSuffix, string.Empty);
-        }
+        private static string TypeToSectionName(Type type) => type.Name.ToLower().Replace(ConfigClassNameSuffix, string.Empty);
 
         private static T Clone<T>(T source)
             where T : class

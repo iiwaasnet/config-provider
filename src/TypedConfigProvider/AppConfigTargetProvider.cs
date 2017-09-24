@@ -10,11 +10,9 @@ namespace TypedConfigProvider
         private readonly IEnumerable<string> targetsSequence;
 
         public AppConfigTargetProvider()
-        {
-            targetsSequence = ReadTargetsSequence();
-        }
+            => targetsSequence = ReadTargetsSequence();
 
-        private IEnumerable<string> ReadTargetsSequence()
+        private static IEnumerable<string> ReadTargetsSequence()
         {
             var sequence = ConfigurationManager.AppSettings[ConfigurationKey];
             if (string.IsNullOrWhiteSpace(sequence))

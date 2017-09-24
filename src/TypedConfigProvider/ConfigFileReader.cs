@@ -11,16 +11,14 @@ namespace TypedConfigProvider
         private static readonly JsonSerializerSettings jsonSerializerSettings;
 
         static ConfigFileReader()
-        {
-            jsonSerializerSettings = new JsonSerializerSettings
-                                     {
-                                         ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                         MissingMemberHandling = MissingMemberHandling.Error,
-                                         DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                                         DateParseHandling = DateParseHandling.None,
-                                         DateTimeZoneHandling = DateTimeZoneHandling.Utc
-                                     };
-        }
+            => jsonSerializerSettings = new JsonSerializerSettings
+                                        {
+                                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                                            MissingMemberHandling = MissingMemberHandling.Error,
+                                            DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                                            DateParseHandling = DateParseHandling.None,
+                                            DateTimeZoneHandling = DateTimeZoneHandling.Utc
+                                        };
 
         public ConfigFileMetadata Parse(FileInfo configFile)
         {

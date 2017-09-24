@@ -6,8 +6,8 @@
 
         public string Target
         {
-            get { return target; }
-            set { target = value.ToLower(); }
+            get => target;
+            set => target = value.ToLower();
         }
 
         public string SectionData { get; set; }

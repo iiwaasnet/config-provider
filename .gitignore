@@ -7,7 +7,7 @@
 *.sln.docstates
 *.sqlite
 VSWorkspaceState.json
-applicationhost.config
+
 # Build results
 
 [Dd]ebug/
@@ -22,6 +22,7 @@ packages/
 !packages/repositories.config
 !packages/*/build/
 
+*.ide
 
 # Ignore node modules
 node_modules/
