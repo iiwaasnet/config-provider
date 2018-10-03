@@ -33,7 +33,7 @@ namespace TypedConfigProvider
                                         };
 
         public ConfigProvider(IConfigTargetProvider targetProvider)
-            : this(targetProvider, DefaultConfigDir)
+            : this(targetProvider, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultConfigDir))
         {
         }
 
@@ -42,7 +42,7 @@ namespace TypedConfigProvider
                               IConfigFileReader configFileReader = null,
                               IConfigFileLocator configFileLocator = null)
         {
-            baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configBaseDir);
+            baseDir = configBaseDir;
             targets = targetProvider.GetTargetsSequence().Select(t => t.ToLower().Trim());
             configurations = new ConcurrentDictionary<Type, object>();
             metadatas = new ConcurrentDictionary<string, ConfigFileMetadata>();
@@ -100,7 +100,8 @@ namespace TypedConfigProvider
             return config;
         }
 
-        private static string TypeToSectionName(Type type) => type.Name.ToLower().Replace(ConfigClassNameSuffix, string.Empty);
+        private static string TypeToSectionName(Type type)
+            => type.Name.ToLower().Replace(ConfigClassNameSuffix, string.Empty);
 
         private static T Clone<T>(T source)
             where T : class

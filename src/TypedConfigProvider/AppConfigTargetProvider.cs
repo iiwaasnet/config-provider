@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET47
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -27,3 +28,4 @@ namespace TypedConfigProvider
             => targetsSequence;
     }
 }
+#endif
