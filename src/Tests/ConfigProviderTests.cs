@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using Moq;
+using NUnit.Framework;
 using Tests.config;
 using TypedConfigProvider;
-using Xunit;
 
 namespace Tests
 {
     public class ConfigProviderTests
     {
-        [Fact]
+        [Test]
         public void Test_FlatConfig_ConvertedToClass()
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
@@ -23,18 +23,18 @@ namespace Tests
             var decimalProp = 12.356m;
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {target});
-            var configProvider = new ConfigProvider(targetProvider.Object, "config");
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<SimpleFlatConfiguration>();
 
-            Assert.Equal(stringProp, config.StringProp);
-            Assert.Equal(booleanProp, config.BooleanProp);
-            Assert.Equal(integerProp, config.IntegerProp);
-            Assert.Equal(dateTimeProp, config.DateTimeProp);
-            Assert.Equal(timeSpanProp, config.TimeSpanProp);
-            Assert.Equal(decimalProp, config.DecimalProp);
+            Assert.AreEqual(stringProp, config.StringProp);
+            Assert.AreEqual(booleanProp, config.BooleanProp);
+            Assert.AreEqual(integerProp, config.IntegerProp);
+            Assert.AreEqual(dateTimeProp, config.DateTimeProp);
+            Assert.AreEqual(timeSpanProp, config.TimeSpanProp);
+            Assert.AreEqual(decimalProp, config.DecimalProp);
         }
 
-        [Fact]
+        [Test]
         public void Test_NestedConfig_ConvertedToClass()
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
@@ -44,31 +44,31 @@ namespace Tests
             var item2 = "item2";
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {target});
-            var configProvider = new ConfigProvider(targetProvider.Object, "config");
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
 
-            Assert.Equal(2, config.Entity.Items.Count());
-            Assert.Equal(1, config.Entity.Items.Count(i => i.Name == item1));
-            Assert.Equal(1, config.Entity.Items.Count(i => i.Name == item2));
+            Assert.AreEqual(2, config.Entity.Items.Count());
+            Assert.AreEqual(1, config.Entity.Items.Count(i => i.Name == item1));
+            Assert.AreEqual(1, config.Entity.Items.Count(i => i.Name == item2));
         }
 
-        [Fact]
+        [Test]
         public void Test_UseNullResetToRemoveAllArrayItems()
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"dev", "reset", "prod"});
-            var configProvider = new ConfigProvider(targetProvider.Object, "config");
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
 
-            Assert.Equal(1, config.Entity.Items.Count());
-            Assert.Equal("item3", config.Entity.Items.First().Name);
-            Assert.Equal("valueDev", config.Prop);
-            Assert.Equal("entityPropProd", config.Entity.Prop);
-            Assert.Equal("valueDev", config.Prop);
+            Assert.AreEqual(1, config.Entity.Items.Count());
+            Assert.AreEqual("item3", config.Entity.Items.First().Name);
+            Assert.AreEqual("valueDev", config.Prop);
+            Assert.AreEqual("entityPropProd", config.Entity.Prop);
+            Assert.AreEqual("valueDev", config.Prop);
         }
 
-        [Fact]
+        [Test]
         public void Test_ConfigurationSectionsAreAppliedInOrderOfTargetsProvided()
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
@@ -82,40 +82,40 @@ namespace Tests
             var devDecimalProp = 12.356m;
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"prod", "dev"});
-            var configProvider = new ConfigProvider(targetProvider.Object, "config");
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<SimpleFlatConfiguration>();
 
-            Assert.Equal(devStringProp, config.StringProp);
-            Assert.Equal(devBooleanProp, config.BooleanProp);
-            Assert.Equal(integerProp, config.IntegerProp);
-            Assert.Equal(dateTimeProp, config.DateTimeProp);
-            Assert.Equal(timeSpanProp, config.TimeSpanProp);
-            Assert.Equal(devDecimalProp, config.DecimalProp);
+            Assert.AreEqual(devStringProp, config.StringProp);
+            Assert.AreEqual(devBooleanProp, config.BooleanProp);
+            Assert.AreEqual(integerProp, config.IntegerProp);
+            Assert.AreEqual(dateTimeProp, config.DateTimeProp);
+            Assert.AreEqual(timeSpanProp, config.TimeSpanProp);
+            Assert.AreEqual(devDecimalProp, config.DecimalProp);
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"dev", "prod"});
-            configProvider = new ConfigProvider(targetProvider.Object, "config");
+            configProvider = new ConfigProvider(targetProvider.Object);
             config = configProvider.GetConfiguration<SimpleFlatConfiguration>();
 
             var prodDecimalProp = 13.356m;
             var prodBooleanProp = false;
             var prodStringProp = "strPROD";
 
-            Assert.Equal(prodStringProp, config.StringProp);
-            Assert.Equal(prodBooleanProp, config.BooleanProp);
-            Assert.Equal(integerProp, config.IntegerProp);
-            Assert.Equal(dateTimeProp, config.DateTimeProp);
-            Assert.Equal(timeSpanProp, config.TimeSpanProp);
-            Assert.Equal(prodDecimalProp, config.DecimalProp);
+            Assert.AreEqual(prodStringProp, config.StringProp);
+            Assert.AreEqual(prodBooleanProp, config.BooleanProp);
+            Assert.AreEqual(integerProp, config.IntegerProp);
+            Assert.AreEqual(dateTimeProp, config.DateTimeProp);
+            Assert.AreEqual(timeSpanProp, config.TimeSpanProp);
+            Assert.AreEqual(prodDecimalProp, config.DecimalProp);
         }
 
-        [Fact]
+        [Test]
         public void Test_IfRequestedTargetIsNotConfigured_GetConfigurationThrowsException()
         {
             var targetProvider = new Mock<IConfigTargetProvider>();
             var target = "missing";
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {target});
-            var configProvider = new ConfigProvider(targetProvider.Object, "config");
+            var configProvider = new ConfigProvider(targetProvider.Object);
             Assert.Throws<Exception>(() => configProvider.GetConfiguration<NestedObjectsConfiguration>());
         }
     }
