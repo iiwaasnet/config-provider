@@ -1,7 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net4.7</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+      <Copyright>Copyright © 2015 Sergey Ivasenko</Copyright>
+      <PackageLicenseUrl>https://github.com/iiwaasnet/config-provider/blob/master/LICENSE</PackageLicenseUrl>
+      <PackageProjectUrl>https://github.com/iiwaasnet/config-provider</PackageProjectUrl>
+      <PackageIconUrl>https://cdn.rawgit.com/iiwaasnet/config-provider/bb28c81f/img/TypedConfigProvider.png</PackageIconUrl>
+      <RepositoryUrl>https://github.com/iiwaasnet/config-provider</RepositoryUrl>
+      <RepositoryType>Git</RepositoryType>
+      <Description>A very simple library to provide typed access to configuration files in JSON format.</Description>
+      <PackageTags>configuration JSON .NET NETCore</PackageTags>
+      <Authors>Sergey Ivasenko</Authors>
+      <BuildNuGetPackage />
   </PropertyGroup>
 
     <ItemGroup>
