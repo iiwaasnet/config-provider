@@ -62,9 +62,10 @@ namespace TypedConfigProvider
                 config = TryGetTypedConfiguration<T>();
 
                 configurations[typeof(T)] = config
-                                            ?? throw new Exception($"Unable to get configuration of type {typeof(T).Name}! " +
-                                                                   $"Missing {TypeToSectionName(typeof(T))}." +
-                                                                   $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
+                                            ?? throw new Exception($"Unable to get configuration of type {typeof(T).Name}! "
+                                                                   + $"Configuration targets checked: {string.Join(",", targets)}. "
+                                                                   + $"Missing {TypeToSectionName(typeof(T))}."
+                                                                   + $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
             }
 
             return config;
