@@ -6,19 +6,19 @@ namespace TypedConfigProvider
 {
     public class ConfigFileLocator : IConfigFileLocator
     {
-        private readonly IEnumerable<string> paths;
+        private readonly string path;
         private readonly IEnumerable<string> fileExtensions;
 
-        public ConfigFileLocator(params string[] paths)
+        public ConfigFileLocator(string path)
         {
-            this.paths = paths;
+            this.path = path;
             fileExtensions = new[] {"config.json"};
         }
 
         public IEnumerable<FileInfo> FindConfigFiles()
-            => paths.SelectMany(FindConfigFilesInFolder).ToArray();
+            => FindConfigFilesInFolder().ToArray();
 
-        private IEnumerable<FileInfo> FindConfigFilesInFolder(string path)
+        private IEnumerable<FileInfo> FindConfigFilesInFolder()
             => fileExtensions.SelectMany(ext => FindConfigFileByMask(new DirectoryInfo(path), ext));
 
         private static IEnumerable<FileInfo> FindConfigFileByMask(DirectoryInfo dir, string fileExt)

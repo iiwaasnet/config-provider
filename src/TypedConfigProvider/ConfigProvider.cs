@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -10,9 +9,8 @@ namespace TypedConfigProvider
 {
     public class ConfigProvider : IConfigProvider
     {
-        private const string DefaultConfigDir = "config";
         private const string ConfigClassNameSuffix = "configuration";
-        private readonly string baseDir;
+        private readonly string searchPath;
         private readonly IEnumerable<string> targets;
         private readonly ConcurrentDictionary<Type, object> configurations;
         private readonly ConcurrentDictionary<string, ConfigFileMetadata> metadatas;
@@ -32,44 +30,82 @@ namespace TypedConfigProvider
                                             DateTimeZoneHandling = DateTimeZoneHandling.Utc
                                         };
 
-        public ConfigProvider(IConfigTargetProvider targetProvider)
-            : this(targetProvider, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultConfigDir))
+        public ConfigProvider(IConfigTargetProvider targetProvider,
+                              string searchPath,
+                              IConfigFileReader configFileReader = null)
+            : this(targetProvider, searchPath, null, configFileReader)
         {
         }
 
         public ConfigProvider(IConfigTargetProvider targetProvider,
-                              string configBaseDir,
-                              IConfigFileReader configFileReader = null,
-                              IConfigFileLocator configFileLocator = null)
+                              IConfigFileLocator configFileLocator,
+                              IConfigFileReader configFileReader = null)
+            : this(targetProvider, null, configFileLocator, configFileReader)
         {
-            baseDir = configBaseDir;
-            targets = targetProvider.GetTargetsSequence().Select(t => t.ToLower().Trim());
+        }
+
+        private ConfigProvider(IConfigTargetProvider targetProvider,
+                               string searchPath,
+                               IConfigFileLocator configFileLocator,
+                               IConfigFileReader configFileReader)
+        {
+            this.searchPath = searchPath;
+            targets = NormalizeTargets(targetProvider?.GetTargetsSequence() ?? Enumerable.Empty<string>());
             configurations = new ConcurrentDictionary<Type, object>();
             metadatas = new ConcurrentDictionary<string, ConfigFileMetadata>();
             configLoaded = false;
-            this.configFileLocator = configFileLocator ?? new ConfigFileLocator(baseDir);
+            this.configFileLocator = configFileLocator ?? new ConfigFileLocator(this.searchPath);
             this.configFileReader = configFileReader ?? new ConfigFileReader();
         }
 
         public T GetConfiguration<T>()
             where T : class, new()
         {
+            AssertTargetsIsSet(targets);
+
             CheckLoadConfiguration();
 
             T config;
             if ((config = TryGetCachedConfiguration<T>()) == null)
             {
-                config = TryGetTypedConfiguration<T>();
+                config = TryGetTypedConfiguration<T>(targets);
 
                 configurations[typeof(T)] = config
-                                            ?? throw new Exception($"Unable to get configuration of type {typeof(T).Name}! "
-                                                                   + $"Configuration targets checked: {string.Join(",", targets)}. "
-                                                                   + $"Missing {TypeToSectionName(typeof(T))}."
-                                                                   + $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
+                                            ?? ThrowConfigNotFoundException<T>(targets);
             }
 
             return config;
         }
+
+        public T GetConfigurationForTargets<T>(params string[] targets)
+            where T : class, new()
+        {
+            AssertTargetsIsSet(targets);
+
+            CheckLoadConfiguration();
+
+            return TryGetTypedConfiguration<T>(NormalizeTargets(targets))
+                   ?? ThrowConfigNotFoundException<T>(targets);
+        }
+
+        private static void AssertTargetsIsSet(IEnumerable<string> targets)
+        {
+            if (targets == null || !targets.Any())
+            {
+                throw new ArgumentException("targets is empty or null!");
+            }
+        }
+
+        private T ThrowConfigNotFoundException<T>(IEnumerable<string> targets)
+            where T : class, new()
+            => throw new Exception($"Unable to get configuration of type {typeof(T).Name}! "
+                                   + $"Configuration targets checked: {string.Join(",", targets)}, "
+                                   + $"path checked: [{searchPath}] ."
+                                   + $"Missing {TypeToSectionName(typeof(T))}."
+                                   + $"[{string.Join("|", configFileLocator.GetSupportedFileExtensions())}]?");
+
+        private static IEnumerable<string> NormalizeTargets(IEnumerable<string> targets)
+            => targets.Select(t => t.ToLower().Trim());
 
         private T TryGetCachedConfiguration<T>()
         {
@@ -78,7 +114,7 @@ namespace TypedConfigProvider
             return (T) tmpConfig;
         }
 
-        private T TryGetTypedConfiguration<T>()
+        private T TryGetTypedConfiguration<T>(IEnumerable<string> targets)
             where T : class, new()
         {
             var config = default(T);
@@ -114,10 +150,20 @@ namespace TypedConfigProvider
         {
             var configFiles = configFileLocator.FindConfigFiles();
 
+            AssertFilesFound();
+
             foreach (var configFile in configFiles)
             {
                 var metadata = configFileReader.Parse(configFile);
                 metadatas[metadata.ConfigName] = metadata;
+            }
+
+            void AssertFilesFound()
+            {
+                if (!configFiles.Any())
+                {
+                    throw new Exception($"No config files found in [{searchPath}]!");
+                }
             }
         }
 
