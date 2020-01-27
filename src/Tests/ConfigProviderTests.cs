@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -10,8 +9,6 @@ namespace Tests
 {
     public class ConfigProviderTests
     {
-        private readonly string SearchPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config");
-
         [Test]
         public void Test_FlatConfig_ConvertedToClass()
         {
@@ -26,7 +23,7 @@ namespace Tests
             var decimalProp = 12.356m;
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {target});
-            var configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<SimpleFlatConfiguration>();
 
             Assert.AreEqual(stringProp, config.StringProp);
@@ -47,7 +44,7 @@ namespace Tests
             var item2 = "item2";
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {target});
-            var configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
 
             Assert.AreEqual(2, config.Entity.Items.Count());
@@ -61,7 +58,7 @@ namespace Tests
             var targetProvider = new Mock<IConfigTargetProvider>();
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"dev", "reset", "prod"});
-            var configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<NestedObjectsConfiguration>();
 
             Assert.AreEqual(1, config.Entity.Items.Count());
@@ -85,7 +82,7 @@ namespace Tests
             var devDecimalProp = 12.356m;
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"prod", "dev"});
-            var configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfiguration<SimpleFlatConfiguration>();
 
             Assert.AreEqual(devStringProp, config.StringProp);
@@ -96,7 +93,7 @@ namespace Tests
             Assert.AreEqual(devDecimalProp, config.DecimalProp);
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {"dev", "prod"});
-            configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            configProvider = new ConfigProvider(targetProvider.Object);
             config = configProvider.GetConfiguration<SimpleFlatConfiguration>();
 
             var prodDecimalProp = 13.356m;
@@ -118,7 +115,7 @@ namespace Tests
             var target = "missing";
 
             targetProvider.Setup(m => m.GetTargetsSequence()).Returns(new[] {target});
-            var configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            var configProvider = new ConfigProvider(targetProvider.Object);
             Assert.Throws<Exception>(() => configProvider.GetConfiguration<NestedObjectsConfiguration>());
         }
 
@@ -135,7 +132,7 @@ namespace Tests
             var devBooleanProp = true;
             var devDecimalProp = 12.356m;
 
-            var configProvider = new ConfigProvider(targetProvider.Object, SearchPath);
+            var configProvider = new ConfigProvider(targetProvider.Object);
             var config = configProvider.GetConfigurationForTargets<SimpleFlatConfiguration>(new[] {"prod", "dev"});
 
             Assert.AreEqual(devStringProp, config.StringProp);

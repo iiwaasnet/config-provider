@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -9,6 +10,7 @@ namespace TypedConfigProvider
 {
     public class ConfigProvider : IConfigProvider
     {
+        private const string DefaultConfigDir = "config";
         private const string ConfigClassNameSuffix = "configuration";
         private readonly string searchPath;
         private readonly IEnumerable<string> targets;
@@ -29,6 +31,11 @@ namespace TypedConfigProvider
                                             DateParseHandling = DateParseHandling.None,
                                             DateTimeZoneHandling = DateTimeZoneHandling.Utc
                                         };
+
+        public ConfigProvider(IConfigTargetProvider targetProvider)
+            : this(targetProvider, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultConfigDir), null, null)
+        {
+        }
 
         public ConfigProvider(IConfigTargetProvider targetProvider,
                               string searchPath,
