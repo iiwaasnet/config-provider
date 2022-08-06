@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net47;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="5.4.2" />
-        <PackageReference Include="System.CodeDom" Version="4.5.0" />
-        <PackageReference Include="Moq" Version="4.10.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-        <PackageReference Include="NUnit" Version="3.10.1" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
+        <PackageReference Include="System.CodeDom" Version="6.0.0" />
+        <PackageReference Include="Moq" Version="4.18.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     </ItemGroup>
 
     <ItemGroup>
