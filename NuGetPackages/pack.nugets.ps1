@@ -3,7 +3,7 @@ param(
     [switch]$rebuild
 )
 
-$MsBuild = (Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\*\MSBuild\15.0\Bin\msbuild.exe").FullName
+$MsBuild = (Get-ChildItem -Path "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\msbuild.exe").FullName
 
 & ".\build.nuspecs.ps1" $version -NoNewWindow
 

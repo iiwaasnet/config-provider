@@ -101,15 +101,11 @@ function Should-BuildNuGetPackage([xml]$projectXml)
 
 function Get-NuGetTargetPlatform([string]$fw)
 {
-    if ($fw -eq 'netstandard2.0')
+    if ($fw -eq 'netstandard2.1')
     {
-        return '.NETStandard2.0'
+        return '.NETStandard2.1'
     }
-    if ($fw -eq 'net47')
-    {
-        return '.NETFramework4.7'
-    }
-	
+ 	
 	# add other FWs, i.e. core, net461, etc
 
     throw 'Framework is not supported: [' + $fw + ']'
@@ -118,13 +114,9 @@ function Get-NuGetTargetPlatform([string]$fw)
 
 function Get-BuildDirForTargetPlatform([string]$fw)
 {
-	if ($fw -eq 'netstandard2.0')
+	if ($fw -eq 'netstandard2.1')
     {
-        return 'netstandard2.0'
-    }
-    if ($fw -eq 'net47')
-    {
-        return 'net4.7'
+        return 'netstandard2.1'
     }
 	
 	# add other FWs, i.e. core, net461, etc
